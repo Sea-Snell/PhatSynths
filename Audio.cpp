@@ -12,7 +12,7 @@ Audio::Audio() : marker("RIFF"), type("WAVE"), format("fmt "), dataChunkHeader("
 	dataSize = 0;
 }
 
-void Audio::generateWAV(string fileName){
+void Audio::generateWAV(string fileName, int loudMultiplier){
 	ofstream myFile;
 	myFile.open(fileName, ios::out | ios::binary);
 
@@ -32,7 +32,15 @@ void Audio::generateWAV(string fileName){
 	myFile.write((char*)&bitsPerSample, 2);
 	myFile.write(dataChunkHeader, 4);
 	myFile.write((char*)&dataSize, 4);
-	myFile.write((char*)&(data[0]), data.size() * 2);
+
+	vector<short> tempData;
+	tempData.reserve(data.size());
+
+	for(int i = 0; i < data.size(); i++){
+		tempData.push_back(data[i] * loudMultiplier);
+	}
+
+	myFile.write((char*)&(tempData[0]), tempData.size() * 2);
 
 
 	myFile.close();

@@ -25,10 +25,10 @@ public:
 	char dataChunkHeader[5];
 	int dataSize;
 
-	vector<short> data;
+	vector<double> data;
 
 	Audio();
-	void generateWAV(string fileName);
+	void generateWAV(string fileName, int loudMultiplier);
 };
 
 #endif
